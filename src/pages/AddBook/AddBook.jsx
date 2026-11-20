@@ -25,16 +25,16 @@ function AddBook() {
       <div className={styles.Container}>
         {!created ? (
           <>
-            <h1>Ajouter un livre</h1>
-            <p>tous les champs sont obligatoires</p>
+            <h1>Add a book</h1>
+            <p>all fields are required</p>
             <BookForm validate={setCreated} />
           </>
         ) : (
           <div className={styles.Created}>
-            <h1>Merci!</h1>
-            <p>votre livre a bien été publié</p>
-            <img src={bookAdd} alt="Livre ajouté" />
-            <Link to="/" className="button">Retour à l&apos;accueil</Link>
+            <h1>Thank you!</h1>
+            <p>your book has been published</p>
+            <img src={bookAdd} alt="Book added" />
+            <Link to="/" className="button">Back to home</Link>
           </div>
 
         )}

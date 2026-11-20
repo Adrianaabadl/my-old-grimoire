@@ -37,16 +37,16 @@ function UpdateBook() {
       <div className={styles.Container}>
         {!created ? (
           <>
-            <h1>Modifier votre livre</h1>
-            <p>Vous pouvez modifier tous les champs sauf la note donnée</p>
+            <h1>Edit your book</h1>
+            <p>You can edit every field except the rating</p>
             <BookForm book={book} validate={setCreated} />
           </>
         ) : (
           <div className={styles.Created}>
-            <h1>Merci!</h1>
-            <p>votre livre a bien été mis à jour</p>
-            <img src={bookAdd} alt="Livre mis à jour" />
-            <Link to="/" className="button">Retour à l&apos;accueil</Link>
+            <h1>Thank you!</h1>
+            <p>your book has been updated</p>
+            <img src={bookAdd} alt="Book updated" />
+            <Link to="/" className="button">Back to home</Link>
           </div>
         )}
       </div>
