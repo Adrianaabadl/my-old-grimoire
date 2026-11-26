@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
 const { execSync } = require('child_process');
 
 const REPO = 'Adrianaabadl/my-old-grimoire';
-const ENVIRONMENT = process.env.ENV_TYPE || 'development'; // development or production
+const ENVIRONMENT = process.env.ENV_TYPE || 'development';
 
 function fetchFromGitHub(endpoint) {
   try {
     const result = execSync(`gh api repos/${REPO}${endpoint}`, {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     });
     return JSON.parse(result);
   } catch (error) {
@@ -20,31 +18,18 @@ function fetchFromGitHub(endpoint) {
 
 async function syncEnv() {
   try {
-    console.log(`📥 Fetching environment variables from GitHub: ${ENVIRONMENT}`);
+    const variables = fetchFromGitHub(`/environments/${ENVIRONMENT}/variables`);
 
-    const variables = await fetchFromGitHub(`/environments/${ENVIRONMENT}/variables`);
-
-    let envContent = `# Synced from GitHub - ${new Date().toISOString()}\n`;
-    envContent += `# Environment: ${ENVIRONMENT}\n\n`;
-
-    variables.variables.forEach(v => {
-      envContent += `${v.name}=${v.value}\n`;
+    // Export variables to shell
+    variables.variables.forEach((v) => {
+      console.log(`export ${v.name}="${v.value}"`);
     });
 
-    envContent += `\n# ⚠️  IMPORTANT: Add MONGO_URI manually in .env.local (not in GitHub for security)\n`;
-    envContent += `# MONGO_URI=your-connection-string-here\n`;
-
-    const envPath = path.join(__dirname, '../backend/.env.local');
-    fs.writeFileSync(envPath, envContent);
-
-    console.log(`✅ Variables synced to: ${envPath}`);
-    console.log('\n📋 Variables obtained:');
-    variables.variables.forEach(v => {
-      console.log(`   - ${v.name}`);
-    });
-
+    // Instructions for MONGO_URI
+    console.log('# Add MONGO_URI manually:');
+    console.log('# export MONGO_URI="your-connection-string"');
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error(`❌ Error: ${error.message}`, { fd: 2 });
     process.exit(1);
   }
 }

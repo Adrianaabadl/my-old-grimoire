@@ -22,29 +22,27 @@ gh auth login
 # GitHub CLI will securely store your credentials
 ```
 
-### 2. Sync variables from GitHub (Local development only)
+### 2. Load environment variables for development
 
+The script fetches variables from GitHub and exports them to your shell (no files created).
+
+**For Backend (Terminal 1):**
 ```bash
-# For development environment (runs on your PC)
-ENV_TYPE=development node scripts/sync-env-from-github.js
-
-# For production environment (runs on your PC)
-ENV_TYPE=production node scripts/sync-env-from-github.js
+eval $(ENV_TYPE=development node scripts/sync-env-from-github.js) && \
+export MONGO_URI="your-connection-string" && \
+cd backend && npm run dev
 ```
 
-**Note:** This script runs **locally on your PC** and generates `backend/.env.local` (which is in `.gitignore`).
-
-On Vercel/GitHub Actions, environment variables are used directly from GitHub, without needing this file.
-
-### 3. Add MONGO_URI manually
-
-The script cannot retrieve MONGO_URI (it's an encrypted Secret in GitHub).
-
-Edit `backend/.env.local` and add:
-
+**For Frontend (Terminal 2):**
 ```bash
-MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/?retryWrites=true&w=majority
+eval $(ENV_TYPE=development node scripts/sync-env-from-github.js) && npm start
 ```
+
+**What this does:**
+- Fetches public variables from GitHub (CORS_ORIGIN, MONGO_DB_NAME)
+- Injects them into the current shell session
+- Runs the app with those variables in memory
+- **Nothing is persisted to files**
 
 ## 🚀 Workflow
 
