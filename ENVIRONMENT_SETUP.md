@@ -22,17 +22,19 @@ gh auth login
 # GitHub CLI will securely store your credentials
 ```
 
-### 2. Sync variables from GitHub
+### 2. Sync variables from GitHub (Local development only)
 
 ```bash
-# For development environment
+# For development environment (runs on your PC)
 ENV_TYPE=development node scripts/sync-env-from-github.js
 
-# For production environment
+# For production environment (runs on your PC)
 ENV_TYPE=production node scripts/sync-env-from-github.js
 ```
 
-This generates `backend/.env.local` with public variables.
+**Note:** This script runs **locally on your PC** and generates `backend/.env.local` (which is in `.gitignore`).
+
+On Vercel/GitHub Actions, environment variables are used directly from GitHub, without needing this file.
 
 ### 3. Add MONGO_URI manually
 
