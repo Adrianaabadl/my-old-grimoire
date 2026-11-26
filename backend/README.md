@@ -53,15 +53,14 @@ mongodb.com/cloud/atlas/register.
 
 https://github.com/getify/you-dont-know-js
 
-Métodos:
+## API Methods
 
-
-Método + path relativo	URL final	Cadena de handlers	Acceso
-
-GET /	/api/books	getAllBooks	público
-GET /bestrating	/api/books/bestrating	getBestRating	público
-GET /:id	/api/books/:id	getOneBook	público
-POST /	/api/books	auth → multer → createBook	protegido
-PUT /:id	/api/books/:id	auth → multer → updateBook	protegido
-DELETE /:id	/api/books/:id	auth → deleteBook	protegido
-POST /:id/rating	/api/books/:id/rating	auth → rateBook	protegido
+| Method + Path | Final URL | Handler Chain | Access |
+|---|---|---|---|
+| GET / | /api/books | getAllBooks | public |
+| GET /bestrating | /api/books/bestrating | getBestRating | public |
+| GET /:id | /api/books/:id | getOneBook | public |
+| POST / | /api/books | auth → multer → createBook | protected |
+| PUT /:id | /api/books/:id | auth → multer → updateBook | protected |
+| DELETE /:id | /api/books/:id | auth → deleteBook | protected |
+| POST /:id/rating | /api/books/:id/rating | auth → rateBook | protected |

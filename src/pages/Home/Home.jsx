@@ -4,6 +4,7 @@ import BookItem from '../../components/Books/BookItem/BookItem';
 import Banner from '../../images/home_banner.jpg';
 import styles from './Home.module.css';
 import { getBooks } from '../../lib/common';
+import { APP_ROUTES } from '../../utils/constants';
 
 function Home() {
   const [books, setBooks] = useState(null);
@@ -29,7 +30,7 @@ function Home() {
         <header className={styles.head}>
           <h1>Our Books</h1>
           <p>to read and read again</p>
-          <Link to="/Ajouter" className="button">+ Add a book</Link>
+          <Link to={APP_ROUTES.ADD_BOOK} className="button">+ Add a book</Link>
         </header>
         <section className={styles.bookList}>
           {loading ? <h1>Loading</h1> : displayBooks()}
