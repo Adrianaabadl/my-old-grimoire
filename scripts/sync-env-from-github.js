@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const REPO = 'adrianaabad/my-old-grimoire';
+const REPO = 'Adrianaabadl/my-old-grimoire';
 const ENVIRONMENT = process.env.ENV_TYPE || 'development'; // development or production
 
 function fetchFromGitHub(endpoint) {
