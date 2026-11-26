@@ -16,11 +16,11 @@ function Header({ user, setUser }) {
   return (
     <header className={styles.Header}>
       <div className="container">
-        <img src={Logo} alt="Mon Vieux Grimoire logo" />
+        <img src={Logo} alt="My Old Grimoire logo" />
         <ul>
           <li><NavLink to="/" end className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>Home</NavLink></li>
-          <li><NavLink to="/Ajouter" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>Add a book</NavLink></li>
-          <li>{!user ? <NavLink to="/Connexion" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>Log in</NavLink> : <span tabIndex={0} role="button" onKeyUp={disconnect} onClick={disconnect}>Log out</span> }</li>
+          <li><NavLink to="/AddBook" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>Add a book</NavLink></li>
+          <li>{!user ? <NavLink to="/SignIn" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>Log in</NavLink> : <span tabIndex={0} role="button" onKeyUp={disconnect} onClick={disconnect}>Log out</span> }</li>
         </ul>
       </div>
     </header>

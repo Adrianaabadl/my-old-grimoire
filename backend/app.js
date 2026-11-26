@@ -11,7 +11,7 @@ app.set('json replacer', (key, value) => (
   value instanceof Error ? { ...value, name: value.name, message: value.message } : value
 ));
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:3000' }));
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/books', bookRoutes);

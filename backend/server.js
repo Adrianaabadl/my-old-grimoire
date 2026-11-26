@@ -1,5 +1,7 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+
+dotenv.config();
 const fs = require('fs');
 const path = require('path');
 const app = require('./app');

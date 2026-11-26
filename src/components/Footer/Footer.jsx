@@ -6,7 +6,7 @@ function Footer() {
   return (
     <footer className={styles.Footer}>
       <div className={styles.MapBlock}>
-        <img src={Map} alt="Map location of Mon Vieux Grimoire" />
+        <img src={Map} alt="Map location of My Old Grimoire" />
         <address>
           {'8 place Jeanne d\'Arc'}
           <br />
