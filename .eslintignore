@@ -4,3 +4,5 @@ dist/
 backend/
 scripts/
 public/
+src/**/*.test.js
+src/**/*.test.jsx
