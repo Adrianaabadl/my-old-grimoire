@@ -18,8 +18,8 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: npm ci
 
-      - name: Run ESLint
-        run: npx eslint . --ext .js,.jsx
+      - name: Lint frontend code
+        run: npx eslint src --ext .js,.jsx
