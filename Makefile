@@ -16,8 +16,12 @@ install:
 	cd backend && npm install
 
 dev-backend:
+	@if [ -z "$$MONGO_URI" ]; then \
+		echo "❌ Error: MONGO_URI not set"; \
+		echo "Usage: export MONGO_URI=\"your-connection-string\" && make dev-backend"; \
+		exit 1; \
+	fi
 	$(LOAD_ENV) && \
-	export MONGO_URI="mongodb+srv://user:password@cluster.mongodb.net/" && \
 	cd backend && npm run dev
 
 dev-frontend:
