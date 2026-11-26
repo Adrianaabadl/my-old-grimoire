@@ -5,7 +5,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const REPO = 'adrianaabad/my-old-grimoire';
-const ENVIRONMENT = process.env.ENV_TYPE || 'development'; // development o production
+const ENVIRONMENT = process.env.ENV_TYPE || 'development'; // development or production
 
 function fetchFromGitHub(endpoint) {
   try {
@@ -20,25 +20,25 @@ function fetchFromGitHub(endpoint) {
 
 async function syncEnv() {
   try {
-    console.log(`📥 Obteniendo variables de GitHub para ambiente: ${ENVIRONMENT}`);
+    console.log(`📥 Fetching environment variables from GitHub: ${ENVIRONMENT}`);
 
     const variables = await fetchFromGitHub(`/environments/${ENVIRONMENT}/variables`);
 
-    let envContent = `# Sincronizado desde GitHub - ${new Date().toISOString()}\n`;
-    envContent += `# Ambiente: ${ENVIRONMENT}\n\n`;
+    let envContent = `# Synced from GitHub - ${new Date().toISOString()}\n`;
+    envContent += `# Environment: ${ENVIRONMENT}\n\n`;
 
     variables.variables.forEach(v => {
       envContent += `${v.name}=${v.value}\n`;
     });
 
-    envContent += `\n# ⚠️  IMPORTANTE: Agrega MONGO_URI manualmente en .env.local (no está en GitHub por seguridad)\n`;
-    envContent += `# MONGO_URI=tu-connection-string-aqui\n`;
+    envContent += `\n# ⚠️  IMPORTANT: Add MONGO_URI manually in .env.local (not in GitHub for security)\n`;
+    envContent += `# MONGO_URI=your-connection-string-here\n`;
 
     const envPath = path.join(__dirname, '../backend/.env.local');
     fs.writeFileSync(envPath, envContent);
 
-    console.log(`✅ Variables sincronizadas en: ${envPath}`);
-    console.log('\n📋 Variables obtenidas:');
+    console.log(`✅ Variables synced to: ${envPath}`);
+    console.log('\n📋 Variables obtained:');
     variables.variables.forEach(v => {
       console.log(`   - ${v.name}`);
     });

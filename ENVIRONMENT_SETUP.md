@@ -1,80 +1,71 @@
 # Environment Setup
 
-Este proyecto usa GitHub para centralizar secretos y variables de entorno.
+This project uses GitHub to centralize secrets and environment variables.
 
-## 🔐 Variables en GitHub
+## 🔐 Variables in GitHub
 
-### Environment Variables (públicas)
-- `MONGO_DB_NAME` → Base de datos a usar
-- `CORS_ORIGIN` → URL del frontend
+### Environment Variables (public)
+- `MONGO_DB_NAME` → Database to use
+- `CORS_ORIGIN` → Frontend URL
 
-### Environment Secrets (encriptados)
-- `MONGO_URI` → Connection string de MongoDB
+### Environment Secrets (encrypted)
+- `MONGO_URI` → MongoDB connection string
+- `JWT_SECRET` → JWT signing key (stored at repository level)
 
-## 📋 Setup Inicial
+## 📋 Initial Setup
 
-### 1. Crear GitHub Personal Access Token
+### 1. Authenticate with GitHub CLI
 
 ```bash
-# Ve a https://github.com/settings/tokens/new
-# Permisos necesarios: read:env (leer variables de entorno)
-# Copia el token
+gh auth login
+# Follow the prompts to authenticate
+# GitHub CLI will securely store your credentials
 ```
 
-### 2. Configurar GITHUB_TOKEN en tu máquina
+### 2. Sync variables from GitHub
 
 ```bash
-# Opción A: Variable temporal (solo esta sesión)
-export GITHUB_TOKEN=tu_token_aqui
-
-# Opción B: Permanente en ~/.bashrc o ~/.zshrc
-echo 'export GITHUB_TOKEN=tu_token_aqui' >> ~/.bashrc
-source ~/.bashrc
-```
-
-### 3. Sincronizar variables desde GitHub
-
-```bash
-# Para ambiente development
+# For development environment
 ENV_TYPE=development node scripts/sync-env-from-github.js
 
-# Para ambiente production
+# For production environment
 ENV_TYPE=production node scripts/sync-env-from-github.js
 ```
 
-Esto genera `backend/.env.local` con las variables.
+This generates `backend/.env.local` with public variables.
 
-### 4. Agregar MONGO_URI manualmente
+### 3. Add MONGO_URI manually
 
-El script NO obtiene MONGO_URI (es un Secret encriptado en GitHub).
+The script cannot retrieve MONGO_URI (it's an encrypted Secret in GitHub).
 
-Edita `backend/.env.local` y agrega:
+Edit `backend/.env.local` and add:
 
 ```bash
-MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/
+MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/?retryWrites=true&w=majority
 ```
 
-## 🚀 Flujo de trabajo
+## 🚀 Workflow
 
-### Desarrollo (rama dev)
+### Development (dev branch)
 
 ```bash
-# 1. Sincronizar variables de development
+# 1. Sync development variables
 ENV_TYPE=development node scripts/sync-env-from-github.js
 
-# 2. Editar backend/.env.local y agregar MONGO_URI
+# 2. Edit backend/.env.local and add MONGO_URI
 
-# 3. Iniciar servidor
+# 3. Start the server
 cd backend && npm run dev
 ```
 
-### Producción (rama main)
+### Production (main branch)
 
-Variables se obtienen automáticamente desde GitHub/Vercel en el deployment.
+Variables are automatically retrieved from GitHub/Vercel during deployment.
 
-## ⚠️ Notas de Seguridad
+## ⚠️ Security Notes
 
-- **Nunca** commitees `.env.local`
-- **Nunca** compartas tu `GITHUB_TOKEN` públicamente
-- Los Secrets de GitHub no se pueden leer directamente (es una limitación de seguridad)
-- Para cambiar secretos, usa GitHub UI o API con permisos adicionales
+- **Never** commit `.env.local` to git (already in .gitignore)
+- **Never** share your GitHub credentials publicly
+- GitHub Secrets cannot be read directly from outside GitHub Actions (security limitation)
+- Use `gh auth login` for secure, automatic authentication
+- JWT_SECRET must be the same across all environments for token verification
