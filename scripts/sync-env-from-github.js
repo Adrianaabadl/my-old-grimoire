@@ -2,43 +2,20 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
+const { execSync } = require('child_process');
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = 'adrianaabad/my-old-grimoire';
 const ENVIRONMENT = process.env.ENV_TYPE || 'development'; // development o production
 
-if (!GITHUB_TOKEN) {
-  console.error('❌ Error: GITHUB_TOKEN no está configurado');
-  console.error('   Ejecuta: export GITHUB_TOKEN=tu_token');
-  process.exit(1);
-}
-
-function fetchFromGitHub(path) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      hostname: 'api.github.com',
-      path: `/repos/${REPO}${path}`,
-      method: 'GET',
-      headers: {
-        'Authorization': `token ${GITHUB_TOKEN}`,
-        'User-Agent': 'Node.js env-sync',
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    };
-
-    https.get(options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode !== 200) {
-          reject(new Error(`GitHub API error: ${res.statusCode} - ${data}`));
-        } else {
-          resolve(JSON.parse(data));
-        }
-      });
-    }).on('error', reject);
-  });
+function fetchFromGitHub(endpoint) {
+  try {
+    const result = execSync(`gh api repos/${REPO}${endpoint}`, {
+      encoding: 'utf-8'
+    });
+    return JSON.parse(result);
+  } catch (error) {
+    throw new Error(`GitHub API error: ${error.message}`);
+  }
 }
 
 async function syncEnv() {
